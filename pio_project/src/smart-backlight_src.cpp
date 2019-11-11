@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 #include "fauxmoESP.h"
 #include "wifi_pass.h"
+#include "debounce.h"
 
 #define SERIAL_BAUDRATE                 9600
 #define LED_STRIP                       5
@@ -24,6 +25,7 @@ bool b_device_2_state = false;
 bool b_switch = false;
 bool b_switch_old = false;
 unsigned int pwm_value_current;
+debounce * db_switch;
 
 // -----------------------------------------------------------------------------
 // Wifi
@@ -65,7 +67,7 @@ void setup() {
     pinMode(LED_STRIP, OUTPUT);
     pinMode(DECICE_2, OUTPUT);
     pinMode(SWITCH, INPUT_PULLUP);
-    //digitalWrite(LED_STRIP, HIGH);
+    db_switch = new debounce(SWITCH, 10);
 
     // By default, fauxmoESP creates it's own webserver on the defined port
     // The TCP port must be 80 for gen3 devices (default is 1901)
@@ -107,7 +109,7 @@ void loop() {
     fauxmo.handle();
 
     //Detect falling edge on the switch (The switch is connectet to a input pullup)
-    b_switch=digitalRead(SWITCH);
+    b_switch = db_switch->get_debounced();
     if(b_switch == 0 && b_switch_old == 1){
        Serial.printf("[SWITCH] The switch was toggeld\n");
        if (!b_backlight_state){
@@ -116,7 +118,6 @@ void loop() {
        b_backlight_state ^= true;
        b_backlight_dim = true;       
     }
-    delay(10);                  //prevent polling (I know there are more elegant ways)
     b_switch_old = b_switch;
     
             
