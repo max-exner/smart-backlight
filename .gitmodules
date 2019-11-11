@@ -1,0 +1,3 @@
+[submodule "smart-backlight_src/fauxmoesp"]
+	path = smart-backlight_src/fauxmoesp
+	url = https://github.com/simap/fauxmoesp.git
