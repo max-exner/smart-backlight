@@ -21,7 +21,6 @@ bool debounce::get_debounced(){
             b_return_state = b_current_state;
         }
     }
-    Serial.printf("[DEBOUNCE] return: %i, read: %i\n", b_last_state, b_current_state);
     b_last_state = b_current_state;
     return b_return_state;
 }

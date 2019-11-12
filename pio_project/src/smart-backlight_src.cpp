@@ -35,6 +35,7 @@ void wifiSetup() {
 
     // Set WIFI module to STA mode
     WiFi.mode(WIFI_STA);
+    wifi_set_sleep_type(MODEM_SLEEP_T);
     // Connect
     Serial.printf("[WIFI] Connecting to %s ", WIFI_SSID);
     WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -158,15 +159,16 @@ void loop() {
 
     //DECICE_2 Ausgang setzten
     digitalWrite(DECICE_2, b_device_2_state);
-
-
+    //sleep for 200ms to reduce power consumption
+    delay(200);
+    
     //Status ausgeben alle 5s
-    static unsigned long last = millis();
+    /*static unsigned long last = millis();
     if (millis() - last > 5000) {
         last = millis();
         Serial.printf("[MAIN] Free heap: %d bytes\n", ESP.getFreeHeap());
         Serial.printf("[MAIN_VAR] b_backlight = %s, b_DECICE_2 = %s\n", b_backlight_state ? "ON" : "OFF", b_device_2_state ? "ON" : "OFF");
         Serial.printf("[MAIN] The current pwm value is: %i\n", pwm_value_current);
-    }
+    }*/
 
 }
