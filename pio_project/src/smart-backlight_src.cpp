@@ -105,7 +105,7 @@ void setup() {
 // LOOP
 // -----------------------------------------------------------------------------
 void loop() {
-
+    unsigned long ul_last = millis();
     //do fauxmo handle
     fauxmo.handle();
 
@@ -128,8 +128,8 @@ void loop() {
 
     if(b_backlight_dim){                          //is there a new dim comand?
       unsigned int pwm_value_target = round(PWMRANGE/double(VALUERANGE) * ui_backlight_value);  //calculate the pwm_value_target (PWMRANGE=1023 & VALUERANGE = 255)
-      Serial.printf("[MAIN] The backlight value is: %i\n", ui_backlight_value);
-      Serial.printf("[MAIN] The max pwm_value_target is: %i\n", pwm_value_target);
+      //Serial.printf("[MAIN] The backlight value is: %i\n", ui_backlight_value);
+      //Serial.printf("[MAIN] The max pwm_value_target is: %i\n", pwm_value_target);
       if (b_backlight_state){                                  //light state is on
         //light up
         if(pwm_value_last < pwm_value_target){
@@ -159,10 +159,20 @@ void loop() {
 
     //DECICE_2 Ausgang setzten
     digitalWrite(DECICE_2, b_device_2_state);
-    //sleep for 200ms to reduce power consumption
-    delay(200);
     
-    //Status ausgeben alle 5s
+    //Make sure that the loop works in (soft) realtime
+    //The realtime requirements are missed when a dim action is done
+    //The delay is needed to reduce the power consumtion
+    unsigned long ul_delta = millis()-ul_last;
+    if (ul_delta<200){
+      delay(200-ul_delta);
+    }
+    else
+    {
+      Serial.printf("[TIMING] The loop miss required timing: %i\n", ul_delta);
+    }
+    
+    //Status every 5sec
     /*static unsigned long last = millis();
     if (millis() - last > 5000) {
         last = millis();
