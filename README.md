@@ -17,12 +17,6 @@ Because it is work in progress some features are available in the future:
 * Easy WiFi Setup without changing the source code
 * MQTT-Support for real cloudless smart home
 
-But see the projct in action:
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
-" target="_blank"><img src="http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
-
 ## How to use the sources
 First of all you need to setup the hardware. After that please use the [example.wifi_pass.h](/pio_project/src/example.wifi_pass.h) to enter your wifi configuration. After you have done this remove the prefix "example.". 
 I use PlatformIO for development, but it is easy to port the source to the Arduino IDE. The sources requires the following dependencies. Please follow the links to get this packages:
